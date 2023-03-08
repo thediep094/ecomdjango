@@ -62,6 +62,17 @@ def updateItem(request):
 
 	return JsonResponse('Item was added', safe=False)
 
+def CategoryView(request,slug):
+	data = cartData(request)
+	cartItems = data['cartItems']
+	slug = slug
+	category = Category.objects.get(slug=slug)
+	products = Product.objects.filter(category=category)
+	context = {'products':products, 'cartItems':cartItems}
+	return render(request, 'store/category.html', context)
+
+
+
 def processOrder(request):
 	transaction_id = datetime.datetime.now().timestamp()
 	data = json.loads(request.body)
